@@ -63,6 +63,7 @@ public class TextEditor extends JFrame implements ActionListener {
         frame.setJMenuBar(menuBar);
         frame.add(text);
         frame.setSize(1000, 1000); //change to default to user monitor size
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
 
@@ -86,12 +87,13 @@ public class TextEditor extends JFrame implements ActionListener {
             if (saveDialogue == JFileChooser.APPROVE_OPTION) {
                 File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
 
-                try {
-                    FileWriter writer = new FileWriter(file, false);
-                    BufferedWriter buffWriter = new BufferedWriter(writer);
-                    buffWriter.write(text.getText());
-                    buffWriter.flush();
-                    buffWriter.close();
+                try (PrintWriter out = new PrintWriter(new FileWriter("TestFile.txt"))){
+                    text.write(out);
+                    //FileWriter writer = new FileWriter(file, false);
+                    //BufferedWriter buffWriter = new BufferedWriter(writer);
+                    //buffWriter.write(text.getText());
+                    //buffWriter.flush();
+                    //buffWriter.close();
                 } catch (Exception evt) {
                     JOptionPane.showMessageDialog(frame, evt.getMessage());
                 }
